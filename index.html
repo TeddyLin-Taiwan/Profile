@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jian-Hong Lin (建宏 林) - 電子名片</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --accent: #0ea5e9;
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(51, 65, 85, 0.5);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        /* 背景動態微光效果 */
+        .bg-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(14, 165, 233, 0.15));
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 10s ease-in-out infinite alternate;
+        }
+
+        .bg-glow.one { top: -10%; left: -10%; }
+        .bg-glow.two { bottom: -10%; right: -10%; animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(30px) scale(1.1); }
+        }
+
+        /* 主卡片容器 */
+        .card-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 40px 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* 頭像與標題 */
+        .profile-header {
+            text-align: center;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+            transition: var(--transition);
+        }
+
+        .avatar:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 0 30px rgba(37, 99, 235, 0.5);
+        }
+
+        .status-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #22c55e;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 3px solid var(--bg-color);
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        .name {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #f8fafc, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title {
+            font-size: 15px;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(14, 165, 233, 0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+        }
+
+        /* 區塊樣式 */
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bio-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #cbd5e1;
+            background: rgba(15, 23, 42, 0.4);
+            padding: 16px;
+            border-radius: 14px;
+            border: 1px solid var(--card-border);
+        }
+
+        /* 技能視覺化 */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .skill-card {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--card-border);
+            padding: 12px 16px;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .skill-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            background: rgba(30, 41, 59, 0.8);
+        }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(51, 65, 85, 0.6);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 3px;
+            width: 0;
+            transition: width 1s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        /* 作品集展示 */
+        .portfolio-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .portfolio-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--card-border);
+            padding: 14px 16px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: var(--transition);
+        }
+
+        .portfolio-item:hover {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .portfolio-content h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .portfolio-content p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .portfolio-item i {
+            color: var(--accent);
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover i {
+            transform: translateX(4px);
+        }
+
+        /* 底部 CTA 按鈕 */
+        .cta-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .cta-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 14px 10px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .cta-btn i { font-size: 20px; }
+
+        .cta-btn.linkedin:hover {
+            background: #0a66c2; border-color: #0a66c2; color: #fff;
+            box-shadow: 0 8px 20px rgba(10, 102, 194, 0.4); transform: translateY(-3px);
+        }
+
+        .cta-btn.email:hover {
+            background: #ea4335; border-color: #ea4335; color: #fff;
+            box-shadow: 0 8px 20px rgba(234, 67, 53, 0.4); transform: translateY(-3px);
+        }
+
+        .cta-btn.instagram:hover {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            border-color: transparent; color: #fff;
+            box-shadow: 0 8px 20px rgba(220, 39, 67, 0.4); transform: translateY(-3px);
+        }
+
+        .footer-credit {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 24px;
+        }
+
+        @media (max-width: 480px) {
+            .card-container { padding: 24px 20px; margin: 0 12px; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .cta-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow one"></div>
+    <div class="bg-glow two"></div>
+
+    <div class="card-container">
+        <!-- 頭像與姓名職稱 -->
+        <div class="profile-header">
+            <div class="avatar-wrapper">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Jian-Hong Lin" class="avatar">
+                <div class="status-badge" title="Open to opportunities"></div>
+            </div>
+            <h1 class="name">林 建宏 (Jian-Hong Lin)</h1>
+            <div class="title">
+                <i class="fa-solid fa-sparkles"></i> 專業經理人 / 商業管理與策略規劃
+            </div>
+        </div>
+
+        <!-- 自我介紹 -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fa-regular fa-user"></i> 關於我 / About Me
+            </div>
+            <div class="bio-text">
+                具備豐富的商業管理、策略規劃與專案執行經驗。擅長跨部門溝通協調、數據分析與營運效率優化。熱衷於探索數位轉型與前沿技術應用，持續為組織創造卓越價值與成長動能。
+            </div>
+        </div>
+
+        <!-- 專案技能 (視覺化呈現) -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fa-solid fa-chart-pie"></i> 核心技能 / Skills
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-info"><span>商業策略與規劃</span><span>95%</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="95%"></div></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-info"><span>專案管理與協調</span><span>90%</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="90%"></div></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-info"><span>數據分析與決策</span><span>85%</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="85%"></div></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-info"><span>跨部門溝通領導</span><span>92%</span></div>
+                    <div class="skill-bar"><div class="skill-progress" data-width="92%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 作品集展示 -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fa-solid fa-briefcase"></i> 專業經歷與亮點 / Portfolio
+            </div>
+            <div class="portfolio-list">
+                <a href="https://www.linkedin.com/in/建宏-林-a803a7b2" target="_blank" class="portfolio-item">
+                    <div class="portfolio-content">
+                        <h4>企業營運優化與數位轉型</h4>
+                        <p>推動跨單位流程改造，顯著提升整體營運產能與效率。</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/建宏-林-a803a7b2" target="_blank" class="portfolio-item">
+                    <div class="portfolio-content">
+                        <h4>策略專案統籌與執行</h4>
+                        <p>領導核心專案團隊，自規劃至落地完整交付關鍵商業目標。</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- 底部 CTA 按鈕 -->
+        <div class="cta-container">
+            <a href="https://www.linkedin.com/in/建宏-林-a803a7b2?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="cta-btn linkedin">
+                <i class="fa-brands fa-linkedin-in"></i>
+                <span>LinkedIn</span>
+            </a>
+            <a href="mailto:your.email@example.com" class="cta-btn email">
+                <i class="fa-regular fa-envelope"></i>
+                <span>Email</span>
+            </a>
+            <a href="https://www.instagram.com" target="_blank" class="cta-btn instagram">
+                <i class="fa-brands fa-instagram"></i>
+                <span>Instagram</span>
+            </a>
+        </div>
+
+        <div class="footer-credit">
+            © 2026 Jian-Hong Lin. All Rights Reserved.
+        </div>
+    </div>
+
+    <!-- 動畫加載腳本 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                const progressBars = document.querySelectorAll(".skill-progress");
+                progressBars.forEach(bar => {
+                    bar.style.width = bar.getAttribute("data-width");
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>
